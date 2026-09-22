@@ -34,6 +34,7 @@ import { NavigationTab } from '../../types';
 import { DbService } from '../../services/dbService';
 import { StorageService } from '../../services/storageService';
 import { PWAHeaderInstallButton } from '../pwa/PWAInstallPrompt';
+import { GlobalHeaderSearchBar } from './GlobalHeaderSearchBar';
 
 // =========================================================================
 // Official Banking Tayari Nepal Inline SVG Component
@@ -180,6 +181,7 @@ export const Header: React.FC = () => {
 
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
   const [isMobileSangathitOpen, setIsMobileSangathitOpen] = useState<boolean>(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState<boolean>(false);
 
   const isGuest = !user?.email || Boolean(user?.isGuest);
 
@@ -281,20 +283,9 @@ export const Header: React.FC = () => {
               </button>
             </div>
 
-            {/* Desktop Search Bar (⌘K) - Minimalist Soft Slate */}
-            <div className="flex-1 max-w-lg hidden md:block">
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                className="w-full flex items-center justify-between px-3.5 py-2 text-xs sm:text-sm bg-[#1E293B] hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-700/80 hover:border-sky-400/60 transition-all text-left group cursor-pointer"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Search className="w-4 h-4 text-slate-400 group-hover:text-sky-400 transition" />
-                  <span className="text-[#E2E8F0] font-medium">{tText('के खोज्दै हुनुहुन्छ? (Search Notes, Quiz...)', 'Search Notes, Quiz, Acts, Syllabi...')}</span>
-                </div>
-                <kbd className="hidden lg:inline-block px-2 py-0.5 text-[10px] font-semibold bg-[#0F172A] border border-slate-700 rounded text-slate-400 font-mono">
-                  ⌘K
-                </kbd>
-              </button>
+            {/* Desktop Global Search Bar across Laws, Acts & Banking Institutions */}
+            <div className="flex-1 max-w-xl hidden md:block">
+              <GlobalHeaderSearchBar />
             </div>
 
             {/* Right Action Controls */}
@@ -302,9 +293,9 @@ export const Header: React.FC = () => {
               
               {/* Mobile Search Button (40px touch target) */}
               <button
-                onClick={() => setIsSearchOpen(true)}
+                onClick={() => setIsMobileSearchOpen(true)}
                 aria-label={tText('खोज्नुहोस्', 'Search')}
-                className="md:hidden min-h-[40px] min-w-[40px] p-2 text-slate-300 hover:text-white hover:bg-[#1E293B] rounded-xl flex items-center justify-center transition active:scale-95 shrink-0 border border-slate-700/60"
+                className="md:hidden min-h-[40px] min-w-[40px] p-2 text-slate-300 hover:text-white hover:bg-[#1E293B] rounded-xl flex items-center justify-center transition active:scale-95 shrink-0 border border-slate-700/60 cursor-pointer"
               >
                 <Search className="w-4.5 h-4.5" />
               </button>
@@ -821,6 +812,30 @@ export const Header: React.FC = () => {
               </button>
             </div>
 
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Global Search Modal Overlay */}
+      {isMobileSearchOpen && (
+        <div className="fixed inset-0 z-50 bg-[#0F172A]/95 backdrop-blur-md flex flex-col p-4 animate-fadeIn md:hidden">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800 shrink-0">
+            <div className="flex items-center gap-2">
+              <Scale className="w-5 h-5 text-sky-400" />
+              <h3 className="text-sm font-bold text-white">ऐन, कानुन तथा बैंक नोट्स खोज</h3>
+            </div>
+            <button
+              onClick={() => setIsMobileSearchOpen(false)}
+              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="pt-3 flex-1 overflow-y-auto">
+            <GlobalHeaderSearchBar 
+              isMobileModal 
+              onClose={() => setIsMobileSearchOpen(false)} 
+            />
           </div>
         </div>
       )}
