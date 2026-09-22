@@ -20,6 +20,7 @@ import { AboutUsScreen } from '../about/AboutUsScreen';
 import { AdminAnalyticsDashboard } from '../admin/AdminAnalyticsDashboard';
 import { DeepResearchEngine } from '../ai/DeepResearchEngine';
 import { FlashcardsScreen } from '../flashcards/FlashcardsScreen';
+import { IntegratedHybridPortal } from '../portal/IntegratedHybridPortal';
 import { Footer } from './Footer';
 
 // Readers & Modals
@@ -81,6 +82,7 @@ export const AppLayout: React.FC<AppLayoutProps> = () => {
 
         <main className={`flex-1 ${activeTab === 'admin' ? 'p-0 w-full' : 'p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto'} pb-32 sm:pb-24 md:pb-12`}>
           {activeTab === 'home' && <HomeScreen />}
+          {activeTab === 'portal' && <IntegratedHybridPortal />}
           {activeTab === 'courses' && <CoursesScreen />}
           {activeTab === 'quiz' && <PublicEnterprisesScreen />}
           {activeTab === 'flashcards' && <FlashcardsScreen />}

@@ -179,7 +179,7 @@ export const Header: React.FC = () => {
   } = useApp();
 
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
-  const [isMobileSangathitOpen, setIsMobileSangathitOpen] = useState<boolean>(true);
+  const [isMobileSangathitOpen, setIsMobileSangathitOpen] = useState<boolean>(false);
 
   const isGuest = !user?.email || Boolean(user?.isGuest);
 
@@ -218,6 +218,7 @@ export const Header: React.FC = () => {
 
   const drawerNavItems: { tab: NavigationTab; label: string; icon: React.ComponentType<{ className?: string }>; badge?: string | number; badgeColor?: string }[] = [
     { tab: 'home', label: tText('गृहपृष्ठ', 'Home'), icon: Home },
+    { tab: 'portal', label: tText('एकीकृत बैंकिङ पोर्टल (NRB/RBB/ADBL/NBL)', 'Hybrid Portal (NRB/RBB/ADBL/NBL)'), icon: Landmark, badge: 'LIVE', badgeColor: 'bg-rose-600 text-white' },
     { tab: 'courses', label: tText('पाठ्यक्रम', 'Syllabus & Courses'), icon: BookOpen },
     { tab: 'quiz', label: tText('संस्थान तथा संगठित संस्था', 'Public Enterprises'), icon: Building2 },
     { tab: 'free-notes', label: tText('अध्ययन / AI नोट्स', 'Study & AI Notes'), icon: FileText },
@@ -322,6 +323,21 @@ export const Header: React.FC = () => {
               <div className="hidden xs:block shrink-0">
                 <PWAHeaderInstallButton />
               </div>
+
+              {/* Integrated Hybrid Portal Button */}
+              <button
+                onClick={() => setActiveTab('portal')}
+                className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl border transition cursor-pointer shrink-0 ${
+                  activeTab === 'portal'
+                    ? 'bg-blue-600 text-white border-blue-500 shadow-xs'
+                    : 'bg-[#1E293B] hover:bg-slate-800 text-sky-300 hover:text-white border-sky-500/40 hover:border-sky-400'
+                }`}
+                title={tText('एकीकृत राष्ट्रिय पोर्टल (Onlinekhabar + NRB + RBB + ADBL + NBL)', 'Integrated Hybrid Portal')}
+              >
+                <Landmark className="w-3.5 h-3.5 text-sky-400" />
+                <span>{tText('एकीकृत पोर्टल', 'Hybrid Portal')}</span>
+                <span className="px-1.5 py-0.2 text-[9px] font-black bg-rose-600 text-white rounded-full">LIVE</span>
+              </button>
 
               {/* About Us Platform Story Button */}
               <button
@@ -613,18 +629,12 @@ export const Header: React.FC = () => {
                           type="button"
                           id="mobile-drawer-sangathit-parent"
                           onClick={() => {
-                            if (activeTab !== 'quiz') {
-                              selectQuizSubCategory(quizSubCategory || 'sangathit');
-                              setIsMobileSangathitOpen(true);
-                              setIsMobileDrawerOpen(false);
-                            } else {
-                              setIsMobileSangathitOpen(!isMobileSangathitOpen);
-                            }
+                            setIsMobileSangathitOpen(!isMobileSangathitOpen);
                           }}
                           className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-bold transition cursor-pointer ${
                             isActive 
                               ? 'bg-[#1E293B] text-white border border-sky-500/50 shadow-xs' 
-                              : 'text-slate-300 hover:text-white hover:bg-[#1E293B]/70'
+                              : 'text-slate-200 hover:text-white hover:bg-[#1E293B]/70'
                           }`}
                         >
                           <div className="flex items-center gap-3 min-w-0 pr-1">
@@ -634,13 +644,7 @@ export const Header: React.FC = () => {
 
                           <div className="flex items-center gap-1.5 shrink-0">
                             <span
-                              role="button"
-                              aria-label={tText('टगल गर्नुहोस्', 'Toggle')}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setIsMobileSangathitOpen(!isMobileSangathitOpen);
-                              }}
-                              className="p-1 rounded-md hover:bg-white/10 text-slate-400 hover:text-white"
+                              className="p-1 rounded-md text-slate-300 hover:text-white"
                             >
                               <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isMobileSangathitOpen ? 'rotate-180' : ''}`} />
                             </span>

@@ -1,5 +1,6 @@
 export type NavigationTab = 
   | 'home' 
+  | 'portal'
   | 'courses' 
   | 'quiz' 
   | 'flashcards'

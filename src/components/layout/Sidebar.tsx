@@ -65,10 +65,10 @@ export const Sidebar: React.FC = () => {
     (typeof window !== 'undefined' && isOwnerAdmin(StorageService.getUserProfile()?.email))
   );
 
-  // Expand state for the strict 4-item sequence
+  // Expand state for the strict 4-item sequence: ALL categories COLLAPSED (closed) by default
   const [expandedSeq, setExpandedSeq] = useState<Record<string, boolean>>({
-    'seq-1': true,
-    'seq-2': true,
+    'seq-1': false,
+    'seq-2': false,
     'seq-3': false,
     'seq-4': false
   });
@@ -333,6 +333,7 @@ export const Sidebar: React.FC = () => {
   ];
 
   const resourceNavItems: { tab: NavigationTab; label: string; icon: React.ComponentType<{ className?: string }>; badge?: string | number; badgeColor?: string }[] = [
+    { tab: 'portal', label: 'एकीकृत पोर्टल (NRB/RBB/NBL)', icon: Landmark, badge: 'LIVE', badgeColor: 'bg-rose-600' },
     { tab: 'flashcards', label: 'स्मार्ट फ्ल्यासकार्ड (Flashcards)', icon: Layers, badge: 'NEW', badgeColor: 'bg-emerald-600' },
     { tab: 'deep-research', label: 'Deep Research AI (रिसर्च)', icon: Bot, badge: 'PRO', badgeColor: 'bg-emerald-600' },
     { tab: 'leaderboard', label: 'वरियता (Leaderboard)', icon: Trophy, badge: 'Ranking', badgeColor: 'bg-amber-500' },
@@ -432,22 +433,22 @@ export const Sidebar: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Numbered Category Header Card */}
+                  {/* Numbered Category Header Card - Expands/Collapses on title click */}
                   <div
-                    onClick={seq.onHeaderClick}
+                    onClick={() => toggleSeq(seq.id)}
                     className="p-3 flex items-center justify-between cursor-pointer select-none group hover:bg-white/5 transition"
                     title={`${seq.num}. ${seq.titleNe} - ${seq.titleEn}`}
                   >
                     <div className="flex items-center space-x-2.5 min-w-0 pr-1">
-                      <div className="w-6 h-6 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 bg-[#0F172A] border border-sky-500/40 text-sky-300">
+                      <div className="w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs shrink-0 bg-[#0F172A] border border-sky-400/60 text-sky-300">
                         {seq.num}
                       </div>
 
                       <div className="min-w-0 truncate">
-                        <h4 className="font-bold text-xs text-[#E2E8F0] truncate leading-tight tracking-tight">
+                        <h4 className="font-bold text-xs text-[#FFFFFF] group-hover:text-sky-300 truncate leading-tight tracking-tight">
                           {seq.titleNe}
                         </h4>
-                        <p className="text-[10px] text-slate-400 truncate font-medium">
+                        <p className="text-[10px] text-slate-300 truncate font-medium">
                           {seq.titleEn}
                         </p>
                       </div>
@@ -457,18 +458,18 @@ export const Sidebar: React.FC = () => {
                       <button
                         type="button"
                         onClick={(e) => toggleSeq(seq.id, e)}
-                        className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 transition cursor-pointer"
-                        title="उप-विषयहरू हेर्नुहोस्"
+                        className="p-1 rounded-md text-slate-300 hover:text-white hover:bg-slate-700/50 transition cursor-pointer"
+                        title={isExpanded ? 'बन्द गर्नुहोस् (Collapse)' : 'हेर्नुहोस् (Expand)'}
                       >
-                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180 text-sky-400' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180 text-sky-400' : 'text-slate-300 group-hover:text-white'}`} />
                       </button>
                     </div>
                   </div>
 
                   {/* Indented Sub-Links with High-Contrast Readable Typography */}
                   {isExpanded && (
-                    <div className="px-3 pb-3 pt-1 border-t border-slate-800/80 bg-[#0F172A]/70">
-                      <div className="ml-1 pl-2 border-l-2 border-slate-700/80 space-y-1 mt-1">
+                    <div className="px-3 pb-3 pt-1 border-t border-slate-800 bg-[#0F172A]">
+                      <div className="ml-1 pl-2.5 border-l-2 border-sky-500/40 space-y-1 mt-1.5">
                         {seq.subLinks.map((sub, sIdx) => (
                           <button
                             key={sIdx}
@@ -477,15 +478,15 @@ export const Sidebar: React.FC = () => {
                               e.stopPropagation();
                               sub.onClick();
                             }}
-                            className="w-full text-left py-1.5 px-2 rounded-lg text-xs font-medium text-slate-300 hover:text-sky-300 hover:bg-[#1E293B] transition flex items-center justify-between group cursor-pointer"
+                            className="w-full text-left py-2 px-2.5 rounded-lg text-xs font-medium text-slate-200 hover:text-white hover:bg-[#1E293B] border border-transparent hover:border-slate-700/60 transition flex items-center justify-between group cursor-pointer"
                           >
                             <div className="flex items-center gap-2 min-w-0 pr-1 truncate">
-                              <span className="w-1.5 h-1.5 rounded-full bg-slate-500 group-hover:bg-sky-400 shrink-0 transition" />
-                              <span className="truncate text-[11px] font-medium text-slate-300 group-hover:text-white">{sub.label}</span>
+                              <span className="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0 group-hover:scale-125 transition-transform" />
+                              <span className="truncate text-xs font-semibold text-slate-100 group-hover:text-white">{sub.label}</span>
                             </div>
 
                             {sub.badge && (
-                              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 group-hover:bg-sky-950 group-hover:text-sky-300 shrink-0 border border-slate-700">
+                              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-sky-300 group-hover:bg-sky-950 group-hover:text-sky-200 shrink-0 border border-slate-700">
                                 {sub.badge}
                               </span>
                             )}

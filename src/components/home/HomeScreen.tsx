@@ -50,6 +50,10 @@ import { FlashcardDashboardCard } from './FlashcardDashboardCard';
 import { ExamRoadmap } from './ExamRoadmap';
 import { DashboardCurrentAffairsSection } from './DashboardCurrentAffairsSection';
 import { StudyProgressTracker } from './StudyProgressTracker';
+import { KeyEconomicIndicatorsWidget } from '../portal/KeyEconomicIndicatorsWidget';
+import { InstitutionHubSection } from '../portal/InstitutionHubSection';
+import { LawsAndActsHubSection } from '../portal/LawsAndActsHubSection';
+import { OnlinekhabarNewsGrid } from '../portal/OnlinekhabarNewsGrid';
 
 export const HomeScreen: React.FC = () => {
   const { 
@@ -286,6 +290,18 @@ export const HomeScreen: React.FC = () => {
 
       {/* Quick Access & Sangathit Sastha Pre-Test */}
       <QuickAccess />
+
+      {/* 2. Key Economic Indicators & Forex Rates Hub (NRB Official Data) */}
+      <KeyEconomicIndicatorsWidget />
+
+      {/* 3. All-Bank & Central Bank Dedicated Exam Modules (NRB, RBB, ADBL, NBL, Loksewa) */}
+      <InstitutionHubSection />
+
+      {/* 4. Direct Laws & Acts Reference Section (BAFIA, NRB Act, AML/CFT, etc.) */}
+      <LawsAndActsHubSection />
+
+      {/* 5. Onlinekhabar-Style News & Updates Grid */}
+      <OnlinekhabarNewsGrid />
 
       {/* Daily Economic & Banking News Current Affairs Section */}
       <DashboardCurrentAffairsSection />
